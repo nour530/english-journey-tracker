@@ -106,12 +106,12 @@ function renderToday() {
 
   $('taskList').innerHTML = info.all.map((t) => `
     <li class="${t.done ? 'done' : ''}" data-id="${esc(t.id)}" data-custom="${t.custom ? 1 : ''}">
-      <span class="tick">${t.done ? '✓' : ''}</span>
+      <span class="tick" title="Mark as done">${t.done ? '✓' : ''}</span>
       <div class="t-body">
         <div class="t-meta"><span class="tag ${esc(t.cat)}">${esc(t.cat)}</span>${t.min ? `<span>${t.min} min</span>` : ''}</div>
         <div class="t-text">${esc(t.text)}</div>
       </div>
-      ${t.custom ? '<button class="del" title="Delete task">×</button>' : ''}
+      ${t.custom ? '<button class="del" title="Delete task">×</button>' : '<span class="t-open">Details ›</span>'}
     </li>`).join('');
 
   // stats
@@ -143,13 +143,92 @@ $('taskList').addEventListener('click', (e) => {
     const list = state.custom[viewDate] || [];
     if (e.target.classList.contains('del')) state.custom[viewDate] = list.filter((c) => c.id !== id);
     else list.forEach((c) => { if (c.id === id) c.done = !c.done; });
+    save(); renderToday();
+    if (dayInfo(viewDate).pct === 100) toast('Day complete! 🎉');
+  } else if (e.target.closest('.tick')) {
+    togglePlanned(id);
   } else {
-    const list = state.done[viewDate] || [];
-    state.done[viewDate] = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+    openDetail(id);
   }
+});
+
+function togglePlanned(id) {
+  const list = state.done[viewDate] || [];
+  state.done[viewDate] = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
   save();
   renderToday();
   if (dayInfo(viewDate).pct === 100) toast('Day complete! 🎉');
+}
+
+// ---------- TASK DETAILS WINDOW ----------
+let detailId = null;
+
+function plannedTasks() {
+  return dayInfo(viewDate).all.filter((t) => !t.custom);
+}
+
+function sectionHtml(s) {
+  let body = '';
+  if (s.text) body = `<p>${esc(s.text)}</p>`;
+  if (s.list) body = `<ul>${s.list.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  if (s.mistake) body = `<div class="mistake"><div class="bad">✗ ${esc(s.mistake[0])}</div><div class="good">✓ ${esc(s.mistake[1])}</div></div>`;
+  if (s.link) body = `<a class="pod-link" href="${s.link.url}" target="_blank"><strong>${esc(s.link.name)} ↗</strong><span>${esc(s.link.why)}</span></a>`;
+  if (s.chips) {
+    const saved = new Set(state.words.map((w) => w.word.toLowerCase()));
+    body = `<div class="chips">${s.chips.map((w) => `<button class="chip ${saved.has(w.toLowerCase()) ? 'saved' : ''}" data-word="${esc(w)}">${saved.has(w.toLowerCase()) ? '✓ ' : ''}${esc(w)}</button>`).join('')}</div>`;
+  }
+  return `<h3>${esc(s.h)}</h3>${body}`;
+}
+
+function openDetail(id) {
+  const tasks = plannedTasks();
+  const t = tasks.find((x) => x.id === id);
+  if (!t || !t.detail) return;
+  detailId = id;
+  const info = dayInfo(viewDate);
+  $('dTag').className = `tag ${t.cat}`;
+  $('dTag').textContent = t.cat;
+  $('dMeta').textContent = `${t.min} min · Day ${info.n} · ${short(viewDate)}`;
+  $('dTitle').textContent = t.detail.title;
+  $('dBody').innerHTML = t.detail.sections.map(sectionHtml).join('');
+  $('dDone').textContent = t.done ? '✓ Done — click to undo' : 'Mark as done';
+  $('dDone').classList.toggle('is-done', t.done);
+  const i = tasks.indexOf(t);
+  $('dPrev').disabled = i === 0;
+  $('dNext').disabled = i === tasks.length - 1;
+  $('dPrev').style.visibility = i === 0 ? 'hidden' : '';
+  $('dNext').style.visibility = i === tasks.length - 1 ? 'hidden' : '';
+  $('detailOverlay').hidden = false;
+}
+
+function closeDetail() { $('detailOverlay').hidden = true; detailId = null; }
+
+function stepDetail(dir) {
+  const tasks = plannedTasks();
+  const i = tasks.findIndex((x) => x.id === detailId) + dir;
+  if (tasks[i]) openDetail(tasks[i].id);
+}
+
+$('dClose').onclick = closeDetail;
+$('dPrev').onclick = () => stepDetail(-1);
+$('dNext').onclick = () => stepDetail(1);
+$('dDone').onclick = () => { togglePlanned(detailId); openDetail(detailId); };
+$('detailOverlay').addEventListener('click', (e) => { if (e.target.id === 'detailOverlay') closeDetail(); });
+document.addEventListener('keydown', (e) => {
+  if ($('detailOverlay').hidden) return;
+  if (e.key === 'Escape') closeDetail();
+  if (e.key === 'ArrowRight') stepDetail(1);
+  if (e.key === 'ArrowLeft') stepDetail(-1);
+});
+
+// Clicking a word chip opens the Vocabulary form with the word filled in.
+$('dBody').addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  closeDetail();
+  document.querySelector('nav button[data-view="vocab"]').click();
+  $('wWord').value = chip.dataset.word;
+  $('wMeaning').focus();
 });
 
 $('customTaskForm').addEventListener('submit', (e) => {

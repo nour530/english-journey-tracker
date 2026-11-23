@@ -97,6 +97,20 @@ English Journey solves this with two things in one simple desktop app:
 
 **Today** — the four planned tasks for the day plus any tasks you add. Ticking a task moves the progress bar; at 100% the bar turns green. The side panel shows your streak, words saved, podcast minutes, journey progress (day X of 84), the last 7 days and a teacher tip.
 
+**Task details** — clicking a task (anywhere except its checkbox) opens a window with that day's full content from the plan. You can move between the day's tasks with *Previous / Next* (or the ← → keys), mark the task done, and close with Esc.
+
+| Task | What the window shows |
+|---|---|
+| Grammar | The rule, 2–4 examples, a common mistake (wrong ✗ / right ✓), your personal exercise, and 25-minute study steps |
+| Vocabulary | The 10 words of the day from the weekly theme (60 per week, 720 in total). Clicking a word opens the Vocabulary form with it filled in; saved words show ✓ |
+| Podcast | Today's podcast with a link, which episode to choose, and the 4-step listening method |
+| Speaking / Writing | The day's question (72 different questions), the grammar to use, and how to do it (sentences, shadowing, voice recording, email, teaching the rule) |
+| Review day (day 7) | The week's 6 lessons, all 60 words of the week, and the fun-day series task |
+
+![Grammar task details](docs/screenshots/detail-grammar.png)
+
+![Vocabulary task details](docs/screenshots/detail-vocab.png)
+
 ![Grammar](docs/screenshots/grammar.png)
 
 **Grammar** — the 72 lessons grouped by week. Each lesson shows *Done*, *Today* or *Missed*, and can be starred for revision.
@@ -146,6 +160,7 @@ english-journey-tracker/
 │  ├─ index.html      Six screens
 │  ├─ styles.css      Design system (colours, cards, bars, tables)
 │  ├─ plan.js         12-week plan, podcasts, daily task generator
+│  ├─ details.js      72 grammar lessons, 720 words, 72 speaking/writing questions
 │  └─ app.js          State, rendering, events, reminders, backup
 ├─ scripts/make-icon.js   Draws the app icon (no dependencies)
 ├─ assets/icon.png
@@ -176,6 +191,8 @@ english-journey-tracker/
 ## 5. Testing
 
 - The app was launched with demo data (journey started 9 days earlier, mixed completed days, words, a podcast, a starred lesson) and every screen was captured and checked — those are the screenshots in this report.
+- A script checked that all 84 days have complete details: 12 weeks × 6 grammar lessons with all 5 parts, 60 words per week with no duplicates, 6 questions per week.
+- Checked the details window: opening each task, marking done from the window (progress updates), Esc to close, and clicking a word to fill the Vocabulary form.
 - Checked: progress percentage and "minutes left", streak calculation, last-7-days bars, grammar Done/Missed/Today status, vocabulary counts and filters, podcast totals, reminder list, settings.
 
 ## 6. How to use it

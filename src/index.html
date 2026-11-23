@@ -243,6 +243,25 @@
 
   <div class="toast" id="toast"></div>
 
+  <div class="overlay" id="detailOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+      <header class="modal-head">
+        <div>
+          <div class="t-meta"><span class="tag" id="dTag"></span><span id="dMeta"></span></div>
+          <h2 id="dTitle"></h2>
+        </div>
+        <button class="icon-btn" id="dClose" title="Close (Esc)">×</button>
+      </header>
+      <div class="modal-body" id="dBody"></div>
+      <footer class="modal-foot">
+        <button class="ghost" id="dPrev">‹ Previous task</button>
+        <button class="primary" id="dDone"></button>
+        <button class="ghost" id="dNext">Next task ›</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="details.js"></script>
   <script src="plan.js"></script>
   <script src="app.js"></script>
 </body>

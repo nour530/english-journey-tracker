@@ -9,6 +9,7 @@ A simple, clean desktop app to track an English learning journey: **grammar, voc
 | Screen | What it does |
 |---|---|
 | **Today** | The plan's 4 tasks for the day (grammar, vocabulary, podcast, speaking/writing) + your own tasks. Progress bar fills as you tick tasks. Streak, journey progress, last 7 days, teacher tip. Arrows let you catch up on past days. |
+| **Task details** | Click any task to open its full lesson: the grammar rule, examples, a common mistake, your exercise and study steps; the 10 words of the day (click a word to save it); which podcast and how to listen; the speaking/writing question and how to do it. |
 | **Grammar** | 72 lessons from A1 to C1. Ticked automatically when you finish that day's grammar task. Star lessons to revise. |
 | **Vocabulary** | Save words with meaning and your own example sentence. Search, filter, mark as known, and **Quiz me** flashcards. Adding 10 words in a day ticks the vocabulary task. |
 | **Podcasts** | Log episodes (minutes + expressions you heard). Recommended podcasts with links. Logging an episode ticks the podcast task. |
@@ -39,7 +40,8 @@ Electron + plain HTML/CSS/JavaScript. No framework, no database: data is saved l
 ```
 main.js          Electron window, tray, start-with-Windows
 preload.js       Safe bridge between the window and Electron
-src/plan.js      The 12-week study plan (edit it to change the programme)
+src/plan.js      The 12-week study plan and the daily task generator
+src/details.js   Lesson content: 72 grammar lessons, 720 words, 72 speaking/writing questions
 src/app.js       All app logic (tasks, progress, words, podcasts, reminders)
 src/index.html   Layout
 src/styles.css   Design
