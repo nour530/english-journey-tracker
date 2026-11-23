@@ -117,7 +117,7 @@ Still not covered by the app (advice in the plan instead): real conversation pra
 
 ![Today](docs/screenshots/today.png)
 
-**Today** — the day's planned tasks (5 on a lesson day) plus any tasks you add. Ticking a task moves the progress bar; at 100% the bar turns green. The header shows the plan day, the week and the lesson; on skim weeks the grammar task becomes a 10-minute "Skim" task. The side panel shows your streak, words saved, podcast minutes, journey progress (day X of 84), the last 7 days and a teacher tip.
+**Today** — the day's planned tasks (5 on a lesson day) plus any tasks you add. Ticking a task moves the progress bar; at 100% the bar turns green. The header shows the plan day, the week and the lesson; on skim weeks the grammar task becomes a 10-minute "Skim" task. The side panel shows your streak, words saved, podcast minutes, journey progress (day X of 84), a *This week* strip linked to the plan, the last 7 days and a teacher tip.
 
 **Task details** — clicking a task (anywhere except its checkbox) opens a window with that day's full content. You can move between the day's tasks with *Previous / Next* (or the ← → keys), mark the task done, and close with Esc.
 
@@ -152,7 +152,17 @@ Still not covered by the app (advice in the plan instead): real conversation pra
 
 ![Plan](docs/screenshots/plan.png)
 
-**My plan** — the honest goal, the daily routine, the rules, and the 12 weeks with the current week highlighted.
+**My plan** — the whole programme, organised and linked to the Today page:
+
+- **Journey progress** — how many of the 85 plan days are done, the day you are on, and the expected finish date (it moves if you miss days).
+- **Milestones** — the 4 tests (days 0, 28, 56, 84) with their dates and your scores. Click one to open that day.
+- **Your daily flow** — the 5 daily steps in order with their minutes, plus the key rules (light day 7, test days, missed days, spaced review).
+- **Week by week** — one card per week with its dates, level, vocabulary theme, a progress bar (x/7 days) and a status (*Completed*, *In progress*, *Upcoming*). Skim / Focus weeks from the starting test are labelled. The current week opens automatically; *Expand all* / *Collapse all* show or hide the others.
+- Inside a week: its phrasal verbs and podcasts, and its 7 days, each with the date, type (*Lesson*, *Review*, *Test*), lesson title, total minutes and status (✓ done, ● today). **Clicking a day opens it on the Today page** with all its tasks.
+
+![Plan: week by week](docs/screenshots/plan-weeks.png)
+
+The **Today** page links back: its *This week* strip shows the 7 days of the current week (✓ done, today highlighted, R = review, T = test). Clicking a tile shows that day's tasks, and *Open in plan ›* opens the week on the My plan page.
 
 ![Settings](docs/screenshots/settings.png)
 

@@ -259,8 +259,90 @@ textarea { resize: vertical; }
 .test-card { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
 .test-card > span { font-size: 12px; color: var(--muted); }
 
+/* ---------- My plan page ---------- */
+.milestones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+.milestone { text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 10px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+.milestone:hover { border-color: var(--accent); }
+.milestone .ms-day { font-size: 11px; color: var(--muted); }
+.milestone .ms-res { font-size: 12px; color: var(--muted); }
+.milestone.done { background: var(--green-soft); border-color: #bfe6cc; }
+.milestone.done .ms-res { color: var(--green); font-weight: 600; }
+.milestone.today { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.flow-step { position: relative; border-radius: 10px; padding: 12px; background: var(--bg); border-top: 3px solid var(--accent); }
+.flow-step b { position: absolute; top: 10px; right: 12px; font-size: 18px; color: rgba(0, 0, 0, .12); }
+.flow-step strong { display: block; }
+.flow-step span { display: block; font-size: 12px; font-weight: 600; color: var(--accent); margin: 2px 0 6px; }
+.flow-step p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.flow-step.Vocabulary { border-top-color: var(--amber); } .flow-step.Vocabulary span { color: var(--amber); }
+.flow-step.Reading { border-top-color: #7e22ce; } .flow-step.Reading span { color: #7e22ce; }
+.flow-step.Podcast { border-top-color: #0369a1; } .flow-step.Podcast span { color: #0369a1; }
+.flow-step.Speaking { border-top-color: var(--green); } .flow-step.Speaking span { color: var(--green); }
+.flow-rules { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.flow-rules span { font-size: 12px; background: var(--bg); border-radius: 99px; padding: 4px 12px; color: var(--muted); }
+.flow-rules b { color: var(--text); }
+
+.plan-toolbar { margin: 22px 0 10px; }
+.plan-toolbar h2 { margin: 0; }
+.plan-week { padding: 0; overflow: hidden; margin-bottom: 10px; }
+.plan-week.current { border-color: #c7cbff; }
+.pw-head { width: 100%; display: grid; grid-template-columns: 52px 1fr 150px 100px 20px; align-items: center; gap: 14px; padding: 14px 18px; background: none; border: 0; cursor: pointer; text-align: left; }
+.pw-head:hover { background: #fafbff; }
+.pw-num { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-weight: 700; background: var(--bg); color: var(--muted); }
+.plan-week.current .pw-num { background: var(--accent); color: #fff; }
+.plan-week.completed .pw-num { background: var(--green); color: #fff; }
+.pw-title strong { font-size: 15px; }
+.pw-title small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.pw-progress .bar, .pw-progress .bar-fill { display: block; }
+.pw-progress .bar { margin-bottom: 4px; }
+.pw-progress small { color: var(--muted); font-size: 11px; }
+.pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; text-align: center; background: var(--bg); color: var(--muted); }
+.pill.current { background: var(--accent-soft); color: var(--accent); }
+.pill.completed { background: var(--green-soft); color: var(--green); }
+.chev { color: var(--muted); font-size: 18px; transition: transform .2s; }
+.plan-week.open .chev { transform: rotate(90deg); }
+.pw-body { display: none; border-top: 1px solid var(--line); padding: 12px 18px 14px; }
+.plan-week.open .pw-body { display: block; }
+.pw-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.pw-meta b { color: var(--text); margin-right: 4px; }
+.pw-days { list-style: none; margin: 0; padding: 0; }
+.pw-day { display: grid; grid-template-columns: 24px 120px 70px 1fr 60px 64px; align-items: center; gap: 10px; padding: 9px 8px; border-radius: 8px; cursor: pointer; }
+.pw-day:hover { background: var(--bg); }
+.pw-day + .pw-day { border-top: 1px solid var(--line); }
+.pw-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #c9cddc; display: grid; place-items: center; font-size: 11px; color: #fff; }
+.pw-day.done .pw-dot { background: var(--green); border-color: var(--green); }
+.pw-day.today .pw-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.pw-day.today { background: var(--accent-soft); }
+.pw-dn small { display: block; font-size: 11px; color: var(--muted); }
+.pw-day .tag { text-align: center; }
+.pw-lesson { line-height: 1.35; }
+.pw-day.done .pw-lesson { color: var(--muted); }
+.pw-min { font-size: 12px; color: var(--muted); text-align: right; }
+.pw-open { font-size: 12px; color: var(--muted); text-align: right; }
+.pw-day:hover .pw-open, .pw-day.today .pw-open { color: var(--accent); font-weight: 600; }
+
+/* ---------- "This week" strip on Today ---------- */
+.wk-head { margin-top: 14px; }
+.wk-head h3 { margin: 0; }
+.link-btn { border: 0; background: none; color: var(--accent); cursor: pointer; font-size: 12px; font-weight: 600; padding: 0; }
+.link-btn:hover { text-decoration: underline; }
+.wk-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
+.wk-tile { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px 0 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.wk-tile b { font-size: 13px; }
+.wk-tile small { font-size: 10px; color: var(--muted); }
+.wk-tile:hover { border-color: var(--accent); }
+.wk-tile.done { background: var(--green-soft); border-color: #bfe6cc; color: var(--green); }
+.wk-tile.today { background: var(--accent); border-color: var(--accent); color: #fff; }
+.wk-tile.today small { color: #e0e3ff; }
+.wk-tile.viewing:not(.today) { box-shadow: 0 0 0 2px var(--accent); }
+
 @media (max-width: 1100px) {
   .test-cards { grid-template-columns: repeat(2, 1fr); }
+  .milestones { grid-template-columns: repeat(2, 1fr); }
+  .flow { grid-template-columns: repeat(3, 1fr); }
+  .pw-head { grid-template-columns: 52px 1fr 100px 20px; }
+  .pw-progress { display: none; }
   .grid-2 { grid-template-columns: 1fr; }
   .word-form { grid-template-columns: 1fr 1fr; }
 }

@@ -196,6 +196,7 @@ function renderToday() {
     dots += `<div class="dot"><i><b class="${pct === 100 ? 'full' : ''}" style="height:${pct}%"></b></i>${parse(d).toLocaleDateString('en-GB', { weekday: 'short' })}</div>`;
   }
   $('weekDots').innerHTML = dots;
+  renderWeekStrip();
   $('tipText').textContent = TIPS[Math.abs(info.n) % TIPS.length];
 }
 
@@ -597,15 +598,147 @@ $('podHistory').addEventListener('click', (e) => {
   save(); renderPodcasts();
 });
 
-// ---------- PLAN ----------
-function renderPlan() {
-  const todayP = planPos(todayIso());
-  const cur = todayP >= 1 ? Math.floor((Math.min(todayP, TOTAL_DAYS) - 1) / 7) : -1;
-  $('planRows').innerHTML = PLAN.map((w, i) => `
-    <tr class="${i === cur ? 'current' : ''}"><td><strong>${i + 1}</strong><br><span class="muted small">${short(dateOfPos(i * 7 + 1))}</span></td>
-    <td><strong>${esc(w.title)}</strong><br><span class="muted small">${w.lessons.map(esc).join(' · ')}</span></td>
-    <td>${esc(w.level)}</td><td>${esc(w.theme)}</td></tr>`).join('');
+// ---------- PLAN (week by week, linked to Today) ----------
+const openWeeks = new Set();
+let planOpened = false;
+
+function posStatus(pos) {
+  const t = planPos(todayIso());
+  if (pos in schedule().doneAt) return 'done';
+  if (pos === t) return 'today';
+  return 'upcoming';
 }
+
+// Week index (0-11) the learner is in now; the starting test counts as week 1.
+function currentWeek() {
+  const t = planPos(todayIso());
+  return t < 1 ? 0 : Math.floor((Math.min(t, TOTAL_DAYS) - 1) / 7);
+}
+
+const KIND_TAG = { lesson: ['Grammar', 'Lesson'], review: ['Fun', 'Review'], test: ['Test', 'Test'] };
+const dayLabel = (d) => parse(d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+
+function openPlanDay(pos) {
+  viewDate = dateOfPos(pos);
+  showView('today');
+}
+
+function dayRow(pos) {
+  const d = decorate(tasksForDay(pos));
+  const st = posStatus(pos);
+  const [cls, label] = KIND_TAG[d.kind];
+  const lvl = d.kind === 'lesson' ? weekLevel(d.weekIdx) : '';
+  const badge = lvl ? `<span class="badge ${lvl}">${lvl === 'skim' ? 'Skim' : 'Focus'}</span>` : '';
+  const testRes = d.kind === 'test' && state.tests[d.testId] ? `<span class="muted small"> · ${state.tests[d.testId].score}/${state.tests[d.testId].total}</span>` : '';
+  const mins = d.tasks.reduce((a, t) => a + t.min, 0);
+  return `<li class="pw-day ${st}" data-pos="${pos}" title="Open day ${pos} on the Today page">
+    <span class="pw-dot">${st === 'done' ? '✓' : ''}</span>
+    <span class="pw-dn"><strong>Day ${pos}</strong><small>${dayLabel(dateOfPos(pos))}</small></span>
+    <span class="tag ${cls}">${label}</span>
+    <span class="pw-lesson">${esc(d.title)}${badge}${testRes}</span>
+    <span class="pw-min">${mins} min</span>
+    <span class="pw-open">${st === 'today' ? 'Today ›' : 'Open ›'}</span>
+  </li>`;
+}
+
+function renderPlan() {
+  const s = schedule();
+  const todayP = Math.max(planPos(todayIso()), 0);
+  const cur = currentWeek();
+  if (!planOpened) { openWeeks.add(cur); planOpened = true; }
+
+  // overview
+  const doneCount = Object.keys(s.doneAt).filter((p) => Number(p) <= TOTAL_DAYS).length;
+  const pct = Math.round((doneCount / (TOTAL_DAYS + 1)) * 100);
+  $('planPct').textContent = `${pct}%`;
+  $('planFill').style.width = `${pct}%`;
+  $('planText').textContent = `${doneCount} of ${TOTAL_DAYS + 1} plan days done · you are on day ${Math.min(todayP, TOTAL_DAYS)} (week ${cur + 1}) · expected finish ${short(dateOfPos(TOTAL_DAYS))}`;
+  const MS = [[0, 'diag'], [28, 'cp1'], [56, 'cp2'], [84, 'final']];
+  $('planMilestones').innerHTML = MS.map(([pos, id]) => {
+    const r = state.tests[id];
+    const st = posStatus(pos);
+    return `<button class="milestone ${st}" data-pos="${pos}">
+      <span class="ms-day">Day ${pos} · ${short(dateOfPos(pos))}</span>
+      <strong>${esc(TESTS[id].name)}</strong>
+      <span class="ms-res">${r ? `${r.score} / ${r.total} (${Math.round((r.score / r.total) * 100)}%)` : st === 'today' ? 'Today' : 'Not taken yet'}</span>
+    </button>`;
+  }).join('');
+
+  // weeks
+  $('planWeeks').innerHTML = PLAN.map((w, wi) => {
+    const positions = Array.from({ length: 7 }, (_, i) => wi * 7 + i + 1);
+    const done = positions.filter((p) => p in s.doneAt).length;
+    const status = done === 7 ? 'completed' : wi === cur ? 'current' : done ? 'current' : 'upcoming';
+    const statusLabel = { completed: 'Completed', current: 'In progress', upcoming: 'Upcoming' }[status];
+    const lvl = weekLevel(wi);
+    const badge = lvl ? `<span class="badge ${lvl}">${lvl === 'skim' ? 'Skim week' : 'Focus week'}</span>` : '';
+    const first = dateOfPos(positions[0]);
+    const last = dateOfPos(positions[6]);
+    const pv = PHRASAL[wi].map((x) => x[0]).join(', ');
+    const pods = [...new Set(PODCAST_BY_PHASE[Math.min(2, Math.floor(wi / 4))].map((i) => PODCASTS[i].name))].join(', ');
+    const open = openWeeks.has(wi);
+    return `<div class="card plan-week ${status} ${open ? 'open' : ''}">
+      <button class="pw-head" data-week="${wi}" aria-expanded="${open}">
+        <span class="pw-num">W${wi + 1}</span>
+        <span class="pw-title"><strong>${esc(w.title)}</strong>${badge}<small>${short(first)} – ${short(last)} · ${esc(w.level)} · ${esc(w.theme)}</small></span>
+        <span class="pw-progress"><span class="bar thin"><span class="bar-fill ${done === 7 ? 'full' : ''}" style="width:${(done / 7) * 100}%"></span></span><small>${done}/7 days</small></span>
+        <span class="pill ${status}">${statusLabel}</span>
+        <span class="chev">›</span>
+      </button>
+      <div class="pw-body">
+        <div class="pw-meta">
+          <span><b>Vocabulary</b> ${esc(w.theme)} · 7 new words a day</span>
+          <span><b>Phrasal verbs</b> ${esc(pv)}</span>
+          <span><b>Listening</b> ${esc(pods)}</span>
+        </div>
+        <ol class="pw-days">${positions.map(dayRow).join('')}</ol>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+$('planWeeks').addEventListener('click', (e) => {
+  const day = e.target.closest('.pw-day');
+  if (day) { openPlanDay(Number(day.dataset.pos)); return; }
+  const head = e.target.closest('.pw-head');
+  if (!head) return;
+  const w = Number(head.dataset.week);
+  if (openWeeks.has(w)) openWeeks.delete(w); else openWeeks.add(w);
+  renderPlan();
+});
+$('planMilestones').addEventListener('click', (e) => {
+  const m = e.target.closest('.milestone');
+  if (m) openPlanDay(Number(m.dataset.pos));
+});
+$('planExpand').onclick = () => { PLAN.forEach((_, i) => openWeeks.add(i)); renderPlan(); };
+$('planCollapse').onclick = () => { openWeeks.clear(); renderPlan(); };
+$('planToToday').onclick = () => { viewDate = todayIso(); showView('today'); };
+
+// "This week" strip on the Today page
+function renderWeekStrip() {
+  const viewP = planPos(viewDate);
+  const wi = viewP < 1 ? 0 : Math.floor((normPos(viewP) - 1) / 7);
+  $('wkTitle').textContent = `Week ${wi + 1}: ${PLAN[wi].title}`;
+  $('wkStrip').innerHTML = Array.from({ length: 7 }, (_, i) => wi * 7 + i + 1).map((pos) => {
+    const d = tasksForDay(pos);
+    const st = posStatus(pos);
+    const viewing = pos === normPos(viewP) ? 'viewing' : '';
+    const icon = st === 'done' ? '✓' : d.kind === 'test' ? 'T' : d.kind === 'review' ? 'R' : String(pos - wi * 7);
+    return `<button class="wk-tile ${st} ${viewing}" data-pos="${pos}" title="Day ${pos}: ${esc(d.title)}"><b>${icon}</b><small>D${pos}</small></button>`;
+  }).join('');
+}
+$('wkStrip').addEventListener('click', (e) => {
+  const t = e.target.closest('.wk-tile');
+  if (!t) return;
+  viewDate = dateOfPos(Number(t.dataset.pos));
+  renderToday();
+});
+$('wkOpenPlan').onclick = () => {
+  const viewP = planPos(viewDate);
+  openWeeks.add(viewP < 1 ? 0 : Math.floor((normPos(viewP) - 1) / 7));
+  planOpened = true;
+  showView('plan');
+};
 
 // ---------- SETTINGS & REMINDERS ----------
 function renderSettings() {

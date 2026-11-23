@@ -70,6 +70,11 @@
             <h2>Journey</h2>
             <div class="bar thin"><div class="bar-fill" id="journeyFill"></div></div>
             <p class="muted small" id="journeyText"></p>
+            <div class="row between wk-head">
+              <h3 id="wkTitle">This week</h3>
+              <button class="link-btn" id="wkOpenPlan">Open in plan ›</button>
+            </div>
+            <div class="wk-strip" id="wkStrip"></div>
             <h3>Last 7 days</h3>
             <div class="week-dots" id="weekDots"></div>
           </div>
@@ -181,33 +186,46 @@
         <div>
           <p class="eyebrow">From your English professor</p>
           <h1>Your 12-week plan</h1>
+          <p class="muted">B2 → strong B2+ in about 100 hours. Click any day to open its tasks.</p>
         </div>
+        <button class="primary" id="planToToday">Go to today ›</button>
       </header>
-      <div class="card prose">
-        <p>You are B2: you understand most things and you can communicate. What usually holds a B2 learner back is not vocabulary, it is <strong>small grammar gaps</strong> that became habits. So we rebuild grammar from the very first lesson, quickly at the start and slower at the end, while your vocabulary, reading and listening stay at your real level.</p>
-        <p><strong>Honest goal:</strong> about 100 hours of work in 12 weeks takes you to a <strong>strong B2+</strong>. C1 usually needs around 200 hours, so it is the next step after this plan.</p>
-        <h3>Your daily routine (about 75 minutes)</h3>
-        <ol>
-          <li><strong>Grammar – 25 min</strong> (10 min on skim weeks). The rule, examples, a common mistake, your exercise, and a 5-minute review of lessons from 1, 3, 7 and 21 days ago.</li>
-          <li><strong>Vocabulary – 10 min.</strong> First the words due for review (they come back after 1, 3, 7 and 21 days), then 7 new words: 5 from the theme list + 2 from your reading or podcast. Always save the collocation.</li>
-          <li><strong>Reading – 15 min.</strong> One short article (B2 news). Read for the main idea, then for words.</li>
-          <li><strong>Podcast – 15 min.</strong> Once without transcript, once with. Podcasts get harder every 4 weeks.</li>
-          <li><strong>Speaking or writing – 10 min.</strong> Answer the day's question using today's grammar. Once a week, get feedback from a real person or an AI tool.</li>
-        </ol>
-        <h3>The rules</h3>
-        <ul>
-          <li>Day 0 is the starting test: weeks you already master become 10-minute "skim" weeks.</li>
-          <li>Days 1–6: one lesson per day. Day 7: a light review day (about 50 minutes, including a fun series).</li>
-          <li>Checkpoint tests on days 28 and 56 and a final test on day 84. Wrong answers star their lessons for revision.</li>
-          <li>The plan only moves on when you finish a lesson. Missed a day? Nothing is skipped – you continue where you stopped.</li>
-        </ul>
-      </div>
+
+      <!-- Overview: progress + milestones -->
       <div class="card">
-        <table class="table plan-table">
-          <thead><tr><th>Week</th><th>Grammar focus</th><th>Level</th><th>Vocabulary theme</th></tr></thead>
-          <tbody id="planRows"></tbody>
-        </table>
+        <div class="progress-top"><span>Journey progress</span><strong id="planPct">0%</strong></div>
+        <div class="bar"><div class="bar-fill" id="planFill"></div></div>
+        <p class="muted small" id="planText"></p>
+        <div class="milestones" id="planMilestones"></div>
       </div>
+
+      <!-- Daily flow -->
+      <div class="card">
+        <h2>Your daily flow <span class="muted small">· about 75 minutes, in this order</span></h2>
+        <div class="flow">
+          <div class="flow-step Grammar"><b>1</b><strong>Grammar</strong><span>25 min · 10 on skim weeks</span><p>Rule, examples, common mistake, exercise + quick review</p></div>
+          <div class="flow-step Vocabulary"><b>2</b><strong>Vocabulary</strong><span>10 min</span><p>Due reviews first, then 7 new words + phrasal verb</p></div>
+          <div class="flow-step Reading"><b>3</b><strong>Reading</strong><span>15 min</span><p>One short B2 article: main idea, then words</p></div>
+          <div class="flow-step Podcast"><b>4</b><strong>Podcast</strong><span>15 min</span><p>Once without transcript, once with</p></div>
+          <div class="flow-step Speaking"><b>5</b><strong>Speak / write</strong><span>10 min</span><p>Answer the day's question with today's grammar</p></div>
+        </div>
+        <div class="flow-rules">
+          <span><b>Day 7</b> light review · 50 min</span>
+          <span><b>Days 0, 28, 56, 84</b> tests</span>
+          <span><b>Missed a day?</b> You continue where you stopped</span>
+          <span><b>Words & grammar</b> come back after 1, 3, 7, 21 days</span>
+        </div>
+      </div>
+
+      <!-- Weeks -->
+      <div class="row between plan-toolbar">
+        <h2>Week by week</h2>
+        <div class="row">
+          <button class="ghost" id="planExpand">Expand all</button>
+          <button class="ghost" id="planCollapse">Collapse all</button>
+        </div>
+      </div>
+      <div id="planWeeks"></div>
     </section>
 
     <!-- SETTINGS -->

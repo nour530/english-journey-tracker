@@ -13,6 +13,7 @@ A simple, clean desktop app to track an English learning journey: **grammar, voc
 | **Today** | The day's tasks (grammar, vocabulary, reading, podcast, speaking/writing) + your own tasks. Progress bar fills as you tick tasks. Streak, journey progress, last 7 days, teacher tip. |
 | **Task details** | Click any task to open its full lesson: grammar rule, examples, common mistake, exercise and a quick review of older lessons; words to choose from and the phrasal verb of the day; reading and podcast sources with method; the speaking/writing question. |
 | **Tests** | Starting test, two checkpoints and a final test, taken inside the app. The starting test turns known weeks into 10-minute "skim" weeks; wrong checkpoint answers star their lessons. |
+| **My plan** | Journey progress, the 4 test milestones, the daily flow, and a card for each week with its 7 days and their status. Click any day to open its tasks on Today; Today's *This week* strip links back. |
 | **Grammar** | Test results and 72 lessons from A1 to C1 with Done / Today status, Skim / Focus badges and stars for revision. |
 | **Vocabulary** | Word bank with spaced repetition (1, 3, 7, 21 days): review due words with *I knew it* / *I didn't know*. Search, filters, next review date. Saving 7 new words with no reviews left ticks the task. |
 | **Podcasts** | Log episodes (minutes + expressions you heard). Recommended podcasts with links. Logging an episode ticks the podcast task. |
