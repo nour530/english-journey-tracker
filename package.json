@@ -1,0 +1,25 @@
+{
+  "name": "english-journey-tracker",
+  "productName": "English Journey",
+  "version": "1.0.0",
+  "description": "A simple desktop tracker for learning English: grammar, vocabulary, podcasts, daily tasks and reminders.",
+  "main": "main.js",
+  "author": "nour530",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "icon": "node scripts/make-icon.js",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.nour530.englishjourney",
+    "productName": "English Journey",
+    "files": ["main.js", "preload.js", "src/**/*", "assets/**/*"],
+    "win": { "target": "portable", "icon": "assets/icon.png" },
+    "directories": { "output": "dist" }
+  }
+}

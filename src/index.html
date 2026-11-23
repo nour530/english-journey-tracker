@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:">
+  <title>English Journey</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../assets/icon.png" alt="">
+      <div>
+        <strong>English Journey</strong>
+        <span>B2 → C1 in 12 weeks</span>
+      </div>
+    </div>
+    <nav>
+      <button data-view="today" class="active">Today</button>
+      <button data-view="grammar">Grammar</button>
+      <button data-view="vocab">Vocabulary</button>
+      <button data-view="podcasts">Podcasts</button>
+      <button data-view="plan">My plan</button>
+      <button data-view="settings">Reminders & settings</button>
+    </nav>
+    <div class="side-foot" id="sideStreak"></div>
+  </aside>
+
+  <main>
+    <!-- TODAY -->
+    <section id="view-today" class="view active">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow" id="todayEyebrow"></p>
+          <h1 id="todayTitle"></h1>
+          <p class="muted" id="todayLesson"></p>
+        </div>
+        <div class="day-nav">
+          <button class="icon-btn" id="prevDay" title="Previous day">‹</button>
+          <button class="ghost" id="goToday">Today</button>
+          <button class="icon-btn" id="nextDay" title="Next day">›</button>
+        </div>
+      </header>
+
+      <div class="card progress-card">
+        <div class="progress-top">
+          <span>Daily progress</span>
+          <strong id="progressPct">0%</strong>
+        </div>
+        <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+        <p class="muted small" id="progressText"></p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Today's tasks</h2>
+          <ul class="tasks" id="taskList"></ul>
+          <form class="inline-form" id="customTaskForm">
+            <input id="customTaskInput" placeholder="Add your own task for this day..." maxlength="120">
+            <button class="primary">Add</button>
+          </form>
+        </div>
+        <div class="stack">
+          <div class="stats">
+            <div class="stat"><span id="statStreak">0</span><label>day streak</label></div>
+            <div class="stat"><span id="statWords">0</span><label>words saved</label></div>
+            <div class="stat"><span id="statMinutes">0</span><label>podcast minutes</label></div>
+          </div>
+          <div class="card">
+            <h2>Journey</h2>
+            <div class="bar thin"><div class="bar-fill" id="journeyFill"></div></div>
+            <p class="muted small" id="journeyText"></p>
+            <h3>Last 7 days</h3>
+            <div class="week-dots" id="weekDots"></div>
+          </div>
+          <div class="card tip">
+            <h3>Professor's tip</h3>
+            <p id="tipText"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAMMAR -->
+    <section id="view-grammar" class="view">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">Grammar from zero</p>
+          <h1>Grammar roadmap</h1>
+          <p class="muted">72 lessons, A1 → C1. A lesson is ticked when you complete its grammar task. Star the ones you want to revise again.</p>
+        </div>
+      </header>
+      <div class="card"><div class="bar thin"><div class="bar-fill" id="grammarFill"></div></div><p class="muted small" id="grammarText"></p></div>
+      <div id="grammarWeeks"></div>
+    </section>
+
+    <!-- VOCAB -->
+    <section id="view-vocab" class="view">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">Your word bank</p>
+          <h1>Vocabulary</h1>
+          <p class="muted" id="vocabSummary"></p>
+        </div>
+        <button class="primary" id="quizBtn">Quiz me</button>
+      </header>
+      <div class="card">
+        <form class="word-form" id="wordForm">
+          <input id="wWord" placeholder="Word or expression" required maxlength="60">
+          <input id="wMeaning" placeholder="Meaning" required maxlength="140">
+          <input id="wExample" placeholder="Your own example sentence" maxlength="200">
+          <button class="primary">Save word</button>
+        </form>
+      </div>
+      <div class="card" id="quizCard" hidden>
+        <p class="eyebrow">Quiz</p>
+        <h2 id="quizWord"></h2>
+        <p id="quizAnswer" class="muted" hidden></p>
+        <div class="row">
+          <button class="ghost" id="quizReveal">Show meaning</button>
+          <button class="ghost" id="quizKnew">I knew it ✓</button>
+          <button class="ghost" id="quizNext">Next</button>
+          <button class="ghost" id="quizClose">Close</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row between">
+          <input id="wordSearch" class="search" placeholder="Search words...">
+          <select id="wordFilter">
+            <option value="all">All words</option>
+            <option value="learning">Still learning</option>
+            <option value="known">Known</option>
+          </select>
+        </div>
+        <table class="table">
+          <thead><tr><th>Word</th><th>Meaning</th><th>Example</th><th>Added</th><th></th></tr></thead>
+          <tbody id="wordRows"></tbody>
+        </table>
+        <p class="empty" id="wordEmpty">No words yet. Add the 10 words of today above.</p>
+      </div>
+    </section>
+
+    <!-- PODCASTS -->
+    <section id="view-podcasts" class="view">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">Listening</p>
+          <h1>Podcasts</h1>
+          <p class="muted" id="podSummary"></p>
+        </div>
+      </header>
+      <div class="grid-2">
+        <div class="card">
+          <h2>Log an episode</h2>
+          <form class="stack-form" id="podForm">
+            <input id="pShow" list="podList" placeholder="Podcast" required maxlength="80">
+            <datalist id="podList"></datalist>
+            <input id="pEpisode" placeholder="Episode title" maxlength="120">
+            <input id="pMinutes" type="number" min="1" max="600" placeholder="Minutes listened" required>
+            <textarea id="pNotes" rows="3" placeholder="New expressions you heard..." maxlength="400"></textarea>
+            <button class="primary">Save episode</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Recommended for you</h2>
+          <ul class="recs" id="podRecs"></ul>
+        </div>
+      </div>
+      <div class="card">
+        <h2>History</h2>
+        <ul class="history" id="podHistory"></ul>
+        <p class="empty" id="podEmpty">No episodes logged yet.</p>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section id="view-plan" class="view">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">From your English professor</p>
+          <h1>Your 12-week plan</h1>
+        </div>
+      </header>
+      <div class="card prose">
+        <p>You are B2: you understand most things and you can communicate. What usually holds a B2 learner back is not vocabulary, it is <strong>small grammar gaps</strong> that became habits. So we rebuild grammar from the very first lesson, quickly at the start (you know it) and slower at the end (where B2 → C1 happens), while your vocabulary and listening stay at your real level.</p>
+        <h3>Your daily routine (about 70 minutes)</h3>
+        <ol>
+          <li><strong>Grammar – 25 min.</strong> Read the rule, write 10 sentences of your own, do exercises. Use <em>English Grammar in Use</em> (Murphy) or British Council LearnEnglish.</li>
+          <li><strong>Vocabulary – 15 min.</strong> 10 new words on the weekly theme, saved with your own example. Review yesterday's words first.</li>
+          <li><strong>Podcast – 20 min.</strong> Listen once without transcript, once with. Note 3 expressions.</li>
+          <li><strong>Output – 10 min.</strong> Speak or write using today's grammar. Without output, grammar never becomes automatic.</li>
+        </ol>
+        <h3>The rules</h3>
+        <ul>
+          <li>Days 1–6: one grammar lesson per day. Day 7: weekly review + a fun episode of a series.</li>
+          <li>Missed a day? Don't skip the lesson – do it the next day. Consistency beats intensity.</li>
+          <li>Star any lesson that still feels unsure; revise starred lessons on review days.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <table class="table plan-table">
+          <thead><tr><th>Week</th><th>Grammar focus</th><th>Level</th><th>Vocabulary theme</th></tr></thead>
+          <tbody id="planRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-settings" class="view">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">Stay consistent</p>
+          <h1>Reminders & settings</h1>
+          <p class="muted">Reminders appear as Windows notifications. Closing the window keeps the app in the system tray so reminders still work.</p>
+        </div>
+      </header>
+      <div class="grid-2">
+        <div class="card">
+          <h2>Daily reminders</h2>
+          <ul class="reminders" id="reminderList"></ul>
+          <form class="inline-form" id="reminderForm">
+            <input type="time" id="rTime" required>
+            <input id="rLabel" placeholder="Message (e.g. Podcast time!)" maxlength="80">
+            <button class="primary">Add</button>
+          </form>
+          <button class="ghost small-btn" id="testNotif">Send a test notification</button>
+        </div>
+        <div class="card">
+          <h2>Settings</h2>
+          <label class="field">Journey start date
+            <input type="date" id="startDate">
+          </label>
+          <label class="check"><input type="checkbox" id="startup"> Start English Journey when Windows starts</label>
+          <div class="row">
+            <button class="ghost" id="exportBtn">Export backup</button>
+            <button class="ghost" id="importBtn">Import backup</button>
+            <input type="file" id="importFile" accept=".json" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="plan.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
