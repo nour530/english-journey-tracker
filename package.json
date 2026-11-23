@@ -19,7 +19,7 @@
     "appId": "com.nour530.englishjourney",
     "productName": "English Journey",
     "files": ["main.js", "preload.js", "src/**/*", "assets/**/*"],
-    "win": { "target": "portable", "icon": "assets/icon.png" },
+    "win": { "target": "portable", "icon": "assets/icon.png", "signAndEditExecutable": false },
     "directories": { "output": "dist" }
   }
 }
