@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>English Journey — User Guide</title>
+<style>
+  :root { --accent: #4f46e5; --soft: #eef0ff; --text: #1f2333; --muted: #6b7185; --line: #e6e8f0; --green: #16a34a; --gsoft: #e8f7ee; --amber: #d97706; --purple: #7e22ce; --blue: #0369a1; --red: #b42318; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; color: var(--text); font-size: 10.5pt; line-height: 1.5; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-size: 21pt; margin: 0 0 4px; letter-spacing: -.3px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  h3 { font-size: 11pt; margin: 14px 0 4px; }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  .eyebrow { font-size: 8.5pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 2px; }
+  .lead { font-size: 11.5pt; color: var(--muted); margin-bottom: 14px; }
+  .muted { color: var(--muted); }
+  .shot { width: 100%; border: 1px solid var(--line); border-radius: 8px; margin: 8px 0 4px; display: block; }
+  .shot.half { width: 82%; margin-left: auto; margin-right: auto; }
+  .shot.small { width: 66%; margin-left: auto; margin-right: auto; }
+  .shot.mid { width: 90%; margin-left: auto; margin-right: auto; }
+  .caption { font-size: 8.5pt; color: var(--muted); text-align: center; margin-bottom: 10px; }
+  .box { border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .tip { background: var(--soft); border-left: 4px solid var(--accent); }
+  .tip b:first-child { color: var(--accent); }
+  .warn { background: #fff4e5; border-left: 4px solid var(--amber); }
+  .good { background: var(--gsoft); border-left: 4px solid var(--green); }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 9.5pt; }
+  th { text-align: left; font-size: 8.5pt; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 2px solid var(--line); }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tag { display: inline-block; font-size: 8pt; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--soft); color: var(--accent); white-space: nowrap; }
+  .tag.v { background: #fff4e5; color: var(--amber); } .tag.r { background: #f3e8ff; color: var(--purple); }
+  .tag.p { background: #e8f4fd; color: var(--blue); } .tag.s { background: var(--gsoft); color: var(--green); }
+  .tag.t { background: #fdecec; color: var(--red); } .tag.f { background: #f1f2f6; color: var(--muted); }
+  .kbd { font-family: Consolas, monospace; font-size: 9pt; background: #f1f2f6; padding: 1px 6px; border-radius: 4px; }
+
+  /* cover */
+  .cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; }
+  .cover img.logo { width: 72px; height: 72px; margin-bottom: 22px; }
+  .cover h1 { font-size: 34pt; line-height: 1.1; }
+  .cover .sub { font-size: 14pt; color: var(--muted); margin: 10px 0 34px; max-width: 140mm; }
+  .cover .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 160mm; }
+  .cover .facts div { background: var(--soft); border-radius: 10px; padding: 12px; }
+  .cover .facts b { display: block; font-size: 18pt; color: var(--accent); }
+  .cover .facts span { font-size: 9pt; color: var(--muted); }
+  .cover .foot { margin-top: 40px; font-size: 9pt; color: var(--muted); }
+
+  /* contents */
+  .toc { list-style: none; padding: 0; margin-top: 10px; }
+  .toc li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 11pt; }
+  .toc .n { width: 26px; height: 26px; border-radius: 7px; background: var(--soft); color: var(--accent); font-weight: 700; display: grid; place-items: center; font-size: 10pt; flex-shrink: 0; }
+  .toc small { display: block; color: var(--muted); font-size: 9pt; }
+
+  /* timeline */
+  .timeline { display: grid; grid-template-columns: 1fr 2.4fr 1fr 2.4fr 1fr 2.4fr 1fr; gap: 4px; margin: 10px 0 6px; align-items: stretch; }
+  .timeline div { border-radius: 8px; padding: 8px 6px; text-align: center; font-size: 8.5pt; }
+  .timeline .test { background: #fdecec; color: var(--red); font-weight: 700; }
+  .timeline .weeks { background: var(--soft); color: var(--accent); }
+  .timeline b { display: block; font-size: 9.5pt; }
+
+  /* steps */
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; position: relative; padding: 2px 0 6px 34px; }
+  .steps > li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 9pt; display: grid; place-items: center; }
+
+  .task { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 10px 0; page-break-inside: avoid; }
+  .task-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .task-head strong { font-size: 11.5pt; }
+  .task-head .min { margin-left: auto; color: var(--muted); font-size: 9pt; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 8px 0 12px; }
+  .flow div { border-radius: 8px; padding: 8px; background: #f6f7fb; border-top: 3px solid var(--accent); font-size: 8.5pt; }
+  .flow div b { display: block; font-size: 9.5pt; }
+  .flow .v { border-top-color: var(--amber); } .flow .r { border-top-color: var(--purple); } .flow .p { border-top-color: var(--blue); } .flow .s { border-top-color: var(--green); }
+
+  .check { list-style: none; padding: 0; }
+  .check li { padding: 5px 0 5px 26px; position: relative; border-bottom: 1px dashed var(--line); }
+  .check li::before { content: ''; position: absolute; left: 2px; top: 7px; width: 13px; height: 13px; border: 1.6px solid #9aa0b4; border-radius: 3px; }
+  .card-ref { border: 2px solid var(--accent); border-radius: 12px; padding: 14px 18px; }
+  .card-ref h2 { margin-top: 0; color: var(--accent); }
+  .avoid { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover">
+  <img class="logo" src="../../assets/icon.png" alt="">
+  <p class="eyebrow">User guide · version 1.2</p>
+  <h1>English Journey</h1>
+  <p class="sub">How to use the app every day for your 12-week journey from B2 to a strong B2+.</p>
+  <div class="facts">
+    <div><b>85</b><span>plan days (day 0 to day 84)</span></div>
+    <div><b>75</b><span>minutes on a normal day</span></div>
+    <div><b>72</b><span>grammar lessons, A1 → C1</span></div>
+    <div><b>4</b><span>tests to measure progress</span></div>
+  </div>
+  <p class="foot">Written by your English professor for nour530 · November 2026</p>
+</section>
+
+<!-- ============ CONTENTS ============ -->
+<section class="page">
+  <p class="eyebrow">Contents</p>
+  <h1>What's in this guide</h1>
+  <ul class="toc">
+    <li><span class="n">1</span><div>Before you start<small>Open the app, set reminders, what you need</small></div></li>
+    <li><span class="n">2</span><div>Your journey at a glance<small>The 12 weeks, the tests, the daily time</small></div></li>
+    <li><span class="n">3</span><div>Day 0: the starting test<small>Find out what you already know</small></div></li>
+    <li><span class="n">4</span><div>A normal day, step by step<small>Grammar, vocabulary, reading, podcast, speaking / writing</small></div></li>
+    <li><span class="n">5</span><div>Review days and test days<small>Day 7 of each week, days 28, 56 and 84</small></div></li>
+    <li><span class="n">6</span><div>Following your progress<small>My plan, Grammar and the "This week" strip</small></div></li>
+    <li><span class="n">7</span><div>Busy days and missed days<small>What to do when life gets in the way</small></div></li>
+    <li><span class="n">8</span><div>Reminders, settings and backups<small>Notifications, start with Windows, saving your data</small></div></li>
+    <li><span class="n">9</span><div>The teacher's rules and your weekly checklist</div></li>
+    <li><span class="n">10</span><div>Problems and questions<small>Quick answers</small></div></li>
+    <li><span class="n">11</span><div>Quick reference card<small>One page to keep next to you</small></div></li>
+  </ul>
+  <div class="box tip"><b>How to read this guide.</b> Read sections 1 to 4 before your first day (about 15 minutes). Keep the quick reference card (section 11) open or printed next to you. Come back to the other sections when you need them.</div>
+</section>
+
+<!-- ============ 1. BEFORE YOU START ============ -->
+<section class="page">
+  <p class="eyebrow">Section 1</p>
+  <h1>Before you start</h1>
+  <p class="lead">Five minutes of set-up now saves you time every day.</p>
+
+  <h2>Open the app</h2>
+  <ol class="steps">
+    <li>Open File Explorer and go to <span class="kbd">C:\Users\nourm\english-journey-tracker\release\win-unpacked</span>.</li>
+    <li>Double-click <b>English Journey.exe</b>. If Windows shows "Windows protected your PC", click <b>More info → Run anyway</b> (the app is not code-signed; this is normal for a personal app).</li>
+    <li>Make a shortcut: right-click <b>English Journey.exe</b> → <b>Send to → Desktop (create shortcut)</b>. From now on, open the app from your desktop.</li>
+  </ol>
+
+  <h2>Set it up once</h2>
+  <ol class="steps">
+    <li>Click <b>Reminders &amp; settings</b> in the sidebar.</li>
+    <li>Tick <b>Start English Journey when Windows starts</b>. The app then opens by itself and your reminders always work.</li>
+    <li>Check the 3 reminders (08:00 grammar, 13:00 reading &amp; podcast, 21:00 progress check). Pause, delete or add reminders so they match your day. Click <b>Send a test notification</b> to see one.</li>
+    <li>Leave <b>Journey start date</b> as it is (the day you started).</li>
+  </ol>
+
+  <div class="box warn"><b>Closing the window does not quit the app.</b> It goes to the system tray (the small icons next to the clock) so reminders can still appear. To really quit, right-click the tray icon → <b>Quit</b>. Only one copy of the app can run at a time, so if an old version is still in the tray, a new one will not open.</div>
+
+  <h2>What you need</h2>
+  <table>
+    <tr><th>Item</th><th>Why</th></tr>
+    <tr><td>A notebook (paper or digital)</td><td>For your grammar sentences and writing tasks</td></tr>
+    <tr><td><i>English Grammar in Use</i> (Murphy) or britishcouncil.org LearnEnglish</td><td>Extra explanations and exercises for each grammar lesson</td></tr>
+    <tr><td>Cambridge or Oxford Learner's Dictionary (free online)</td><td>Meaning and pronunciation of new words</td></tr>
+    <tr><td>Your phone</td><td>Recording yourself on speaking days, podcasts on the go</td></tr>
+    <tr><td>Headphones</td><td>Podcasts and shadowing</td></tr>
+  </table>
+</section>
+
+<!-- ============ 2. JOURNEY AT A GLANCE ============ -->
+<section class="page">
+  <p class="eyebrow">Section 2</p>
+  <h1>Your journey at a glance</h1>
+  <p class="lead">12 weeks, about 100 hours, from B2 to a strong B2+. You rebuild grammar from the very beginning while your vocabulary, reading and listening stay at your real level.</p>
+
+  <div class="timeline">
+    <div class="test"><b>Day 0</b>Starting test</div>
+    <div class="weeks"><b>Weeks 1–4</b>Foundations, present, past, present perfect</div>
+    <div class="test"><b>Day 28</b>Checkpoint 1</div>
+    <div class="weeks"><b>Weeks 5–8</b>Narratives, modals, conditionals, passive</div>
+    <div class="test"><b>Day 56</b>Checkpoint 2</div>
+    <div class="weeks"><b>Weeks 9–12</b>Reported speech, clauses, linking, advanced</div>
+    <div class="test"><b>Day 84</b>Final test</div>
+  </div>
+
+  <h2>Every week has the same shape</h2>
+  <table>
+    <tr><th>Days</th><th>Type</th><th>Time</th><th>What happens</th></tr>
+    <tr><td>Days 1–6</td><td><span class="tag">Lesson</span></td><td>≈ 75 min</td><td>One new grammar lesson + vocabulary + reading + podcast + speaking or writing</td></tr>
+    <tr><td>Day 7</td><td><span class="tag f">Review</span></td><td>≈ 50 min</td><td>Light review of the week + a fun episode of a series in English</td></tr>
+  </table>
+
+  <h2>A normal day: 5 tasks, in this order</h2>
+  <div class="flow">
+    <div><b>1 Grammar</b>25 min<br>(10 on skim weeks)</div>
+    <div class="v"><b>2 Vocabulary</b>10 min<br>reviews + 7 new words</div>
+    <div class="r"><b>3 Reading</b>15 min<br>one short article</div>
+    <div class="p"><b>4 Podcast</b>15 min<br>one episode</div>
+    <div class="s"><b>5 Speak / write</b>10 min<br>the day's question</div>
+  </div>
+
+  <h2>Four ideas that make the plan work</h2>
+  <ul>
+    <li><b>Test first, then skip what you know.</b> The starting test turns weeks you already master into 10-minute "skim" weeks.</li>
+    <li><b>Spaced repetition.</b> Words and grammar come back after 1, 3, 7 and 21 days, just before you would forget them.</li>
+    <li><b>Nothing is ever skipped.</b> The plan moves to the next lesson only when you finish the current one.</li>
+    <li><b>Small every day.</b> 75 minutes a day is better than 5 hours on Sunday.</li>
+  </ul>
+
+  <div class="box good"><b>Honest goal.</b> About 100 hours of work takes you to a <b>strong B2+</b>: accurate grammar, a larger vocabulary, comfortable reading and listening. C1 usually needs about 200 hours, so it is your next step after this plan.</div>
+</section>
+
+<!-- ============ 3. DAY 0 ============ -->
+<section class="page">
+  <p class="eyebrow">Section 3</p>
+  <h1>Day 0: the starting test</h1>
+  <p class="lead">24 questions, about 20 minutes. It tells the app which weeks you can go through quickly.</p>
+
+  <ol class="steps">
+    <li>Open the <b>Today</b> page. You will see <b>Day 0 · Starting test</b>.</li>
+    <li>Click the task <span class="tag t">Test</span> <b>Starting test: 24 questions</b>, then <b>Start the test</b>.</li>
+    <li>Answer every question. <b>No dictionary, no guessing help</b> — the result must show your real level.</li>
+    <li>Click <b>Submit answers</b>. You see your score, your result for each week and every mistake with the right answer.</li>
+    <li>Do the second task: read <b>My plan</b> and set your reminders (section 1). Your day 0 is done.</li>
+  </ol>
+
+  <img class="shot half" src="../screenshots/test-result.png" alt="">
+  <p class="caption">Example result: weeks 1–6 all right (Skim), weeks 7–12 all wrong (Focus).</p>
+
+  <table>
+    <tr><th>Your result for a week</th><th>What the app does</th></tr>
+    <tr><td><b>2 / 2 → Skim week</b></td><td>The grammar task of that week becomes a 10-minute "Skim" task: read the rule and the common mistake, do the quick review, write 3 sentences, move on.</td></tr>
+    <tr><td><b>1 / 2 → normal week</b></td><td>The normal 25-minute grammar lesson.</td></tr>
+    <tr><td><b>0 / 2 → Focus week</b></td><td>The lesson is marked "Focus": take your time, do extra exercises, star the lesson if it still feels unsure.</td></tr>
+  </table>
+</section>
+
+<!-- ============ 4. A NORMAL DAY ============ -->
+<section class="page">
+  <p class="eyebrow">Section 4</p>
+  <h1>A normal day, step by step</h1>
+  <p class="lead">Open the app, go to <b>Today</b>, and work down the list from top to bottom.</p>
+
+  <img class="shot" src="../screenshots/today.png" alt="">
+  <p class="caption">The Today page: your tasks on the left; streak, journey, "This week" strip and the last 7 days on the right.</p>
+
+  <h2>How the Today page works</h2>
+  <ul>
+    <li><b>Click a task</b> (its text) to open a window with exactly what to do today.</li>
+    <li><b>Click the square box</b> on the left to tick a task as done. Click it again to undo.</li>
+    <li>The <b>daily progress bar</b> fills as you tick tasks and turns green at 100%.</li>
+    <li>Your <b>streak</b> grows by 1 for every day you finish at 100%.</li>
+    <li>You can <b>add your own task</b> at the bottom of the list (for example "Watch a TED talk").</li>
+  </ul>
+  <div class="box tip"><b>Tip.</b> In the task window, use <b>Next task ›</b> (or the → key) to go through the whole day without closing the window, and <b>Mark as done</b> when you finish each task.</div>
+</section>
+
+<section class="page">
+  <div class="task">
+    <div class="task-head"><span class="tag">Grammar</span><strong>Step 1 · Grammar</strong><span class="min">25 min (10 on skim weeks)</span></div>
+    <ol class="steps">
+      <li>Click the grammar task. Read <b>The rule</b> and the <b>Examples</b> (5 min).</li>
+      <li>Look at the <b>Common mistake</b>: the red ✗ sentence is wrong, the green ✓ one is right. Say the right one out loud.</li>
+      <li><b>Quick review</b>: you see the wrong sentence from lessons of 1, 3, 7 and 21 days ago. Correct it in your head, then click to check (5 min).</li>
+      <li>Do extra exercises in Murphy or on British Council LearnEnglish (10 min), then <b>Your exercise</b> in your notebook (5 min).</li>
+      <li>Still unsure? Go to <b>Grammar</b> and click the ★ next to the lesson to star it for revision.</li>
+    </ol>
+    <img class="shot" src="../screenshots/detail-grammar.png" alt="">
+    <p class="caption">The grammar window: common mistake, your exercise and the quick review (click a card to see the answer).</p>
+  </div>
+</section>
+
+<section class="page">
+  <div class="task">
+    <div class="task-head"><span class="tag v">Vocabulary</span><strong>Step 2 · Vocabulary</strong><span class="min">10 min</span></div>
+    <ol class="steps">
+      <li><b>Reviews first.</b> Click <b>Start review</b> in the task window (or <b>Review due words</b> on the Vocabulary page).</li>
+      <li>For each word: try to remember the meaning, click <b>Show meaning</b>, then answer honestly: <b>I knew it ✓</b> or <b>I didn't know ✗</b>.</li>
+      <li><b>New words.</b> In the task window, choose <b>5 of the 10 theme words</b> you don't know (skip the easy ones). Click a word: the Vocabulary form opens with it filled in.</li>
+      <li>Look it up in the dictionary and save it with the <b>meaning</b>, its <b>collocation</b> ("meet a deadline", not just "deadline") and <b>your own example sentence</b>.</li>
+      <li>Add <b>2 more words</b> from today's reading or podcast, and the <b>phrasal verb of the day</b> (click it: meaning and example are filled in for you).</li>
+    </ol>
+    <img class="shot mid" src="../screenshots/vocab.png" alt="">
+    <p class="caption">The Vocabulary page with the review card open. "Next review" shows when each word comes back.</p>
+    <table>
+      <tr><th>Your answer</th><th>When the word comes back</th></tr>
+      <tr><td>New word saved</td><td>Tomorrow</td></tr>
+      <tr><td>I knew it ✓ (1st, 2nd, 3rd time)</td><td>In 3 days → in 7 days → in 21 days</td></tr>
+      <tr><td>I knew it ✓ (4th time)</td><td>Marked as <b>known</b> — it won't come back</td></tr>
+      <tr><td>I didn't know ✗</td><td>Tomorrow again (starts from the beginning)</td></tr>
+    </table>
+    <div class="box good"><b>Automatic tick.</b> The vocabulary task ticks itself when you have saved 7 new words today and no reviews are left.</div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="task">
+    <div class="task-head"><span class="tag r">Reading</span><strong>Step 3 · Reading</strong><span class="min">15 min</span></div>
+    <ol class="steps">
+      <li>Click the reading task and click the source link (it opens in your browser).</li>
+      <li>Choose one short article (300–600 words), on the week's theme or any topic you like.</li>
+      <li>Read once quickly for the main idea. Don't stop for unknown words.</li>
+      <li>Read again slowly and underline 5–8 new words. Save the 2 most useful in Vocabulary.</li>
+      <li>Summarise the article out loud in 2–3 sentences. Then tick the task.</li>
+    </ol>
+    <img class="shot" style="width:54%;margin:6px auto 2px" src="../screenshots/detail-reading.png" alt="">
+  </div>
+
+  <div class="task">
+    <div class="task-head"><span class="tag p">Podcast</span><strong>Step 4 · Podcast</strong><span class="min">15 min</span></div>
+    <ol class="steps">
+      <li>Click the podcast task and open the podcast link. Choose an episode about the week's theme (or any recent one).</li>
+      <li>Listen once <b>without</b> the transcript (main idea), then once <b>with</b> it (details).</li>
+      <li>Go to <b>Podcasts</b>, fill in the podcast name, episode, minutes and the expressions you heard, and click <b>Save episode</b>. <b>The task ticks itself.</b></li>
+    </ol>
+    <p class="muted">Podcasts get harder every 4 weeks: BBC and All Ears English at the start, Luke's English Podcast and TED Talks at the end.</p>
+  </div>
+
+  <div class="task">
+    <div class="task-head"><span class="tag s">Speaking / Writing</span><strong>Step 5 · Speak or write</strong><span class="min">10 min</span></div>
+    <ol class="steps">
+      <li>Click the task: you see <b>the question</b>, the <b>grammar to use</b> and <b>how to do it</b> (sentences, a paragraph, an email, shadowing, a voice recording, or teaching the rule out loud).</li>
+      <li>Answer the question using today's grammar and some of today's words.</li>
+      <li><b>Once a week</b>, show one text or recording to someone who can correct you: a teacher, a native-speaker friend, or an AI tool. Write down your mistakes.</li>
+    </ol>
+  </div>
+  <div class="box good"><b>Done!</b> When all 5 tasks are ticked, the progress bar turns green, your streak grows, and tomorrow the app moves to the next lesson.</div>
+</section>
+
+<!-- ============ 5. REVIEW & TEST DAYS ============ -->
+<section class="page">
+  <p class="eyebrow">Section 5</p>
+  <h1>Review days and test days</h1>
+
+  <h2><span class="tag f">Review</span> Day 7 of every week — about 50 minutes</h2>
+  <table>
+    <tr><th>Task</th><th>Time</th><th>What to do</th></tr>
+    <tr><td>Grammar review</td><td>15 min</td><td>Go through the common mistake of each of the week's 6 lessons (click to check), revise your starred lessons, write one paragraph using 3 grammar points.</td></tr>
+    <tr><td>Vocabulary review</td><td>10 min</td><td>Do all your due word reviews.</td></tr>
+    <tr><td>Fun day</td><td>25 min</td><td>Watch one episode of a series in English with <b>English</b> subtitles. Repeat 3 sentences you like and save 2 expressions.</td></tr>
+  </table>
+
+  <h2><span class="tag t">Test</span> Days 28, 56 and 84</h2>
+  <table>
+    <tr><th>Day</th><th>Test</th><th>Questions</th><th>After the test</th></tr>
+    <tr><td>28</td><td>Checkpoint 1 (weeks 1–4)</td><td>16</td><td rowspan="2">Every lesson you get wrong is <b>starred automatically</b>. Revise starred lessons on your next review days.</td></tr>
+    <tr><td>56</td><td>Checkpoint 2 (weeks 5–8)</td><td>16</td></tr>
+    <tr><td>84</td><td>Final test (all 12 weeks)</td><td>24</td><td>Compare your score with your starting test to see how far you have come.</td></tr>
+  </table>
+  <p>On test days you also do your vocabulary reviews. You can retake any test later from its task window, and see all your scores on the <b>Grammar</b> page and the <b>My plan</b> page.</p>
+
+  <div class="box tip"><b>Teacher's advice for tests.</b> Do them in one sitting, with no dictionary and no notes. A low score is not a failure: it shows you exactly what to revise, and that is the most useful information you can get.</div>
+</section>
+
+<!-- ============ 6. PROGRESS ============ -->
+<section class="page">
+  <p class="eyebrow">Section 6</p>
+  <h1>Following your progress</h1>
+
+  <h2>My plan — the whole journey</h2>
+  <img class="shot" src="../screenshots/plan.png" alt="">
+  <p class="caption">Top of My plan: journey progress, the 4 tests and your daily flow.</p>
+  <ul>
+    <li><b>Journey progress</b>: how many plan days you have done and your expected finish date.</li>
+    <li><b>Milestones</b>: the 4 tests with their dates and your scores. Click one to open that day.</li>
+    <li><b>Week by week</b>: one card per week (dates, level, theme, x/7 days, status). The current week is open; click a week to open or close it.</li>
+  </ul>
+</section>
+
+<section class="page">
+  <img class="shot" src="../screenshots/plan-weeks.png" alt="">
+  <p class="caption">Inside a week: its phrasal verbs and podcasts, and its 7 days. ✓ = done, blue dot = today.</p>
+  <div class="box tip"><b>Plan and Today are linked.</b> Click any day in My plan to open it on the Today page with all its tasks. On the Today page, the <b>This week</b> strip shows the 7 days of your week (R = review day, T = test day): click a tile to see that day, or <b>Open in plan ›</b> to jump to the week.</div>
+
+  <h2>Grammar — your lessons and test results</h2>
+  <ul>
+    <li>Your 4 test scores at the top.</li>
+    <li>All 72 lessons by week, with <b>Done</b> / <b>Today</b>, and <b>Skim</b> / <b>Focus</b> labels from your starting test.</li>
+    <li>The ★ star: click it to mark a lesson you want to revise. Be honest — honest stars mean fast progress.</li>
+  </ul>
+  <img class="shot small" src="../screenshots/grammar.png" alt="">
+</section>
+
+<!-- ============ 7. BUSY & MISSED ============ -->
+<section class="page">
+  <p class="eyebrow">Section 7</p>
+  <h1>Busy days and missed days</h1>
+
+  <h2>You missed a day</h2>
+  <p>Nothing is lost. <b>The plan only moves forward when you finish a lesson</b>, so the next time you open the app, it continues exactly where you stopped. The header says "continuing where you stopped". Your expected finish date simply moves one day later.</p>
+  <ul>
+    <li>Do <b>not</b> try to do two days in one day. Just do today's tasks.</li>
+    <li>Your words that were due will wait for you: do your reviews first.</li>
+    <li>Your streak restarts, but your progress does not. Start a new streak today.</li>
+  </ul>
+
+  <h2>You only have 20 minutes</h2>
+  <p>Do the minimum day. It keeps the habit alive:</p>
+  <ol class="steps">
+    <li><b>Vocabulary reviews</b> (5 min) — so words don't pile up.</li>
+    <li><b>The grammar lesson</b>, short version: rule, examples, common mistake, quick review (10–15 min). Tick it — this moves the plan forward.</li>
+    <li>Leave the other tasks unticked. That's OK.</li>
+  </ol>
+
+  <h2>You want to look at another day</h2>
+  <p>Use the <b>‹</b> and <b>›</b> arrows at the top of the Today page, a tile in the <b>This week</b> strip, or a day in <b>My plan</b>. Click <b>Today</b> to come back.</p>
+
+  <div class="box warn"><b>Ticked something by mistake?</b> Click the tick box again to undo it. If it was the grammar task of a past day, your current plan day may change — undo it and it goes back.</div>
+</section>
+
+<!-- ============ 8. SETTINGS ============ -->
+<section class="page">
+  <p class="eyebrow">Section 8</p>
+  <h1>Reminders, settings and backups</h1>
+  <img class="shot" src="../screenshots/settings.png" alt="">
+  <table>
+    <tr><th>Setting</th><th>How to use it</th></tr>
+    <tr><td>Daily reminders</td><td>Windows notifications at the times you choose. Add one with the time + message → <b>Add</b>. <b>Pause</b> turns one off without deleting it. Reminders tell you how many tasks are left.</td></tr>
+    <tr><td>Start with Windows</td><td>Tick it so the app (and your reminders) start by themselves every day.</td></tr>
+    <tr><td>Journey start date</td><td>The day your journey began. You normally never change it.</td></tr>
+    <tr><td>Export backup</td><td>Saves all your data (words, progress, tests) in one <span class="kbd">.json</span> file. Do it every Sunday and keep the file in OneDrive or on a USB stick.</td></tr>
+    <tr><td>Import backup</td><td>Loads a backup file, for example on a new computer. It replaces the current data.</td></tr>
+  </table>
+  <div class="box tip"><b>Your data stays on your computer.</b> There is no account and nothing is sent to the internet. That is why the weekly backup matters.</div>
+</section>
+
+<!-- ============ 9. RULES & CHECKLIST ============ -->
+<section class="page">
+  <p class="eyebrow">Section 9</p>
+  <h1>The teacher's rules</h1>
+  <ol class="steps">
+    <li><b>Consistency beats intensity.</b> 10 minutes on a bad day is better than nothing.</li>
+    <li><b>Review before new.</b> Word reviews and the grammar quick review always come first.</li>
+    <li><b>Learn words with their partners.</b> "make a decision", "heavy traffic", "meet a deadline".</li>
+    <li><b>Make it personal.</b> Write examples about your own life — you remember them much better.</li>
+    <li><b>Say it out loud.</b> Grammar you can say quickly is grammar you really own.</li>
+    <li><b>Be honest</b> with tests, stars and "I didn't know". Honesty is what makes the plan adapt to you.</li>
+    <li><b>Get feedback once a week</b> on your speaking or writing.</li>
+  </ol>
+
+  <h2>Your weekly checklist</h2>
+  <p class="muted">Print this page or copy it into your notebook. Tick each item at the end of the week (day 7).</p>
+  <ul class="check">
+    <li>I finished the 6 lessons of the week (or I know which one I'm on).</li>
+    <li>I did my word reviews every day — nothing is overdue.</li>
+    <li>I saved about 40 new words, each with a collocation and my own example.</li>
+    <li>I read 6 articles and listened to 6 podcast episodes.</li>
+    <li>I got feedback on one text or recording, and wrote down my mistakes.</li>
+    <li>I revised my starred lessons on day 7.</li>
+    <li>I watched one episode of a series with English subtitles.</li>
+    <li>I exported a backup.</li>
+  </ul>
+</section>
+
+<!-- ============ 10. FAQ ============ -->
+<section class="page">
+  <p class="eyebrow">Section 10</p>
+  <h1>Problems and questions</h1>
+  <table>
+    <tr><th style="width:38%">Problem / question</th><th>Answer</th></tr>
+    <tr><td>I open the app but I see an old version, or nothing happens.</td><td>An older copy is still running in the tray. Right-click the English Journey icon near the clock → <b>Quit</b>, then open the app again from <span class="kbd">release\win-unpacked</span>.</td></tr>
+    <tr><td>The app takes a long time to open.</td><td>Use <span class="kbd">release\win-unpacked\English Journey.exe</span> (opens fast), not the single-file <span class="kbd">English Journey 1.2.0.exe</span> (unpacks itself first).</td></tr>
+    <tr><td>My reminders don't appear.</td><td>The app must be running (in the tray is fine). Check that the reminder is not paused, and that Windows "Do not disturb" / Focus is off. Use <b>Send a test notification</b>.</td></tr>
+    <tr><td>The vocabulary task doesn't tick itself.</td><td>It needs 7 new words saved <b>today</b> and <b>no due reviews</b>. Do your reviews, or tick it yourself.</td></tr>
+    <tr><td>The podcast task doesn't tick itself.</td><td>Save the episode on the <b>Podcasts</b> page on the same day. Or tick it yourself.</td></tr>
+    <tr><td>All the theme words are too easy.</td><td>Take your 7 words from your reading and podcast instead. The list is a help, not an obligation.</td></tr>
+    <tr><td>A skim week feels too fast.</td><td>Do the full lesson anyway and star it. The skim label is a suggestion based on 2 questions.</td></tr>
+    <tr><td>I want to use the app on another computer.</td><td>Export a backup, copy the <span class="kbd">release\win-unpacked</span> folder and the backup file, then <b>Import backup</b> on the new computer.</td></tr>
+    <tr><td>I finished day 84. What now?</td><td>Compare your final test with your starting test. The app starts a second round: use it for revision at a faster pace, or move on to C1 material (for example <i>Advanced Grammar in Use</i>).</td></tr>
+  </table>
+</section>
+
+<!-- ============ 11. QUICK REFERENCE ============ -->
+<section class="page">
+  <p class="eyebrow">Section 11</p>
+  <h1>Quick reference card</h1>
+  <div class="card-ref">
+    <h2>Every day (about 75 minutes)</h2>
+    <table>
+      <tr><th>#</th><th>Task</th><th>Time</th><th>In the app</th></tr>
+      <tr><td>1</td><td><span class="tag">Grammar</span></td><td>25 min</td><td>Click task → rule, examples, common mistake, quick review, exercise → Mark as done</td></tr>
+      <tr><td>2</td><td><span class="tag v">Vocabulary</span></td><td>10 min</td><td>Start review → then 5 theme words + 2 own words + phrasal verb → Save word (ticks itself at 7)</td></tr>
+      <tr><td>3</td><td><span class="tag r">Reading</span></td><td>15 min</td><td>Click task → open source → read twice → save 2 words → tick</td></tr>
+      <tr><td>4</td><td><span class="tag p">Podcast</span></td><td>15 min</td><td>Listen twice → Podcasts page → Save episode (ticks itself)</td></tr>
+      <tr><td>5</td><td><span class="tag s">Speak / write</span></td><td>10 min</td><td>Click task → answer the question with today's grammar → tick</td></tr>
+    </table>
+
+    <div class="two">
+      <div>
+        <h3>Special days</h3>
+        <ul>
+          <li><b>Day 0</b> starting test (skim / focus weeks)</li>
+          <li><b>Day 7</b> of each week: light review, 50 min</li>
+          <li><b>Days 28 &amp; 56</b> checkpoints, <b>day 84</b> final test</li>
+        </ul>
+        <h3>Spaced repetition</h3>
+        <p>Words and grammar come back after <b>1 → 3 → 7 → 21</b> days.</p>
+      </div>
+      <div>
+        <h3>Useful clicks</h3>
+        <ul>
+          <li>Task text → details window</li>
+          <li>Tick box → done / undo</li>
+          <li>‹ › → other days · <b>Today</b> → back</li>
+          <li>Word chip → fills the Vocabulary form</li>
+          <li>★ on Grammar → revise later</li>
+          <li>Day in My plan → opens it on Today</li>
+          <li>Tray icon → Quit</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box good" style="margin-bottom:0"><b>Missed a day?</b> Nothing is skipped — just open the app and continue. <b>Busy?</b> Reviews + a short grammar lesson = 20 minutes.</div>
+  </div>
+</section>
+
+</body>
+</html>

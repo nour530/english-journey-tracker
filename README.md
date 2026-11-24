@@ -52,7 +52,7 @@ src/styles.css   Design
 scripts/make-icon.js  Generates assets/icon.png
 ```
 
-See [REPORT.md](REPORT.md) for the full project report and the learning plan.
+See [REPORT.md](REPORT.md) for the full project report and the learning plan, and the **[User guide (PDF)](docs/English-Journey-User-Guide.pdf)** for how to use the app day by day. Rebuild the guide with `npm run guide`.
 
 ## License
 

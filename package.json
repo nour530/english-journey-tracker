@@ -9,6 +9,7 @@
   "scripts": {
     "start": "electron .",
     "icon": "node scripts/make-icon.js",
+    "guide": "electron scripts/make-guide.js",
     "dist": "electron-builder --win portable"
   },
   "devDependencies": {
