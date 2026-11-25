@@ -343,7 +343,15 @@ function submitTest() {
   const { id, qs } = testMode;
   const answers = qs.map((_, i) => { const c = document.querySelector(`input[name="q${i}"]:checked`); return c ? Number(c.value) : -1; });
   const missing = answers.filter((a) => a < 0).length;
-  if (missing) { toast(`${missing} question${missing > 1 ? 's' : ''} not answered yet`); return; }
+  document.querySelectorAll('#dBody .q.missing').forEach((el) => el.classList.remove('missing'));
+  if (missing) {
+    const boxes = document.querySelectorAll('#dBody .q');
+    answers.forEach((a, i) => { if (a < 0 && boxes[i]) boxes[i].classList.add('missing'); });
+    const first = answers.indexOf(-1);
+    boxes[first].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast(`${missing} question${missing > 1 ? 's' : ''} not answered yet (marked in red) - first one: question ${first + 1}`);
+    return;
+  }
 
   const weeks = {};
   const wrong = [];
@@ -835,3 +843,9 @@ setInterval(() => {
 }, 60000);
 
 render();
+
+// Clear the red "not answered" mark as soon as a question gets an answer.
+$('dBody').addEventListener('change', (e) => {
+  const q = e.target.closest('.q.missing');
+  if (q) q.classList.remove('missing');
+});
