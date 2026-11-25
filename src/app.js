@@ -287,6 +287,16 @@ function sectionHtml(s) {
       : '<p>Nothing to review today ✓</p>';
   }
   if (s.test) body = testSummary(s.test);
+  if (s.keys) body = `<ul class="keys">${s.keys.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  if (s.murphy) {
+    const { units, note } = s.murphy;
+    body = (units.length
+      ? `<div class="murphy">${units.map((u) => `<div class="mu"><span class="mu-unit">Unit ${u}</span><span class="mu-title">${esc(MURPHY[u])}</span><span class="mu-pages">${murphyPages(u)}</span></div>`).join('')}</div>
+         <p class="muted small">Left page = the rule, right page = exercises (answers in the key at the back). Older edition? Find the unit by its title in the contents.</p>`
+      : '')
+      + (note ? `<p class="muted">${esc(note)}</p>` : '');
+  }
+  if (s.links) body = `<div class="links">${s.links.map((l) => `<a class="pod-link" href="${l.url}" target="_blank"><strong>${esc(l.name)} ↗</strong><span>${esc(l.why)}</span></a>`).join('')}</div>`;
   return `<h3>${esc(s.h)}</h3>${body}`;
 }
 
@@ -445,6 +455,7 @@ function renderGrammar() {
       const status = done ? 'Done' : (n === todayP ? 'Today' : '');
       return `<li class="${done ? 'ok' : ''}">
         <span class="num">Day ${n}</span><span class="name">${esc(l)}</span>
+        <span class="mref" title="English Grammar in Use, 5th edition">${RES[wi][li].units.length ? `Murphy ${RES[wi][li].units.join(', ')}` : ''}</span>
         <span class="status">${status}</span>
         <button class="star ${state.stars[key] ? 'on' : ''}" data-key="${key}" title="Revise again">★</button>
       </li>`;

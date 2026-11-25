@@ -268,17 +268,24 @@ function tasksForDay(pos) {
     .filter((x, i, a) => a.findIndex((y) => y.w === x.w && y.l === x.l) === i)
     .map((x) => reviewItem(x.w, x.l));
 
+  const res = RES[weekIdx][dayInWeek];
+  const hasBook = res.units.length > 0;
   const grammarSections = [
     { h: 'The rule', text: rule },
+    { h: 'Key rules at a glance', keys: res.keys },
     { h: 'Examples', list: examples },
     { h: 'Common mistake', mistake: [wrong, right] },
     { h: 'Your exercise', text: practice },
   ];
   if (reviews.length) grammarSections.push({ h: 'Quick review (5 min) - correct each sentence, then check', reviews });
+  grammarSections.push({ h: 'Murphy - English Grammar in Use (5th edition)', murphy: { units: res.units, note: res.note } });
+  grammarSections.push({ h: 'Learn & practise online', links: onlineLinks(res.q) });
   grammarSections.push({ h: 'Study steps (25 min)', list: [
-    'Read the rule and the examples (5 min). For more, find the same topic in English Grammar in Use (Murphy) or on British Council LearnEnglish.',
-    reviews.length ? 'Do the quick review above (5 min).' : 'Read the rule out loud and write 2 examples of your own (5 min).',
-    'Do exercises in the book or online and check your answers (10 min).',
+    'Read the rule, the key rules and the examples (5 min).',
+    reviews.length ? 'Do the quick review above (5 min).' : 'Read the key rules out loud and write 2 examples of your own (5 min).',
+    hasBook
+      ? `Murphy: read the left page of unit ${res.units[0]} if anything is unclear, then do the exercises on the right page and check them in the key at the back (10 min).`
+      : 'Do one exercise page online (British Council or Perfect English Grammar) and check your answers (10 min).',
     'Do your exercise above (5 min). Still unsure? Star this lesson in the Grammar tab.',
   ] });
 
