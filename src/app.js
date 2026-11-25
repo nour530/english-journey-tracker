@@ -135,7 +135,61 @@ function showView(name) {
   document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('active', x.dataset.view === name));
   document.querySelectorAll('.view').forEach((v) => v.classList.toggle('active', v.id === `view-${name}`));
   render();
+  if (!navMoving) recordPage(name);
 }
+
+// ---------- BACK / NEXT (page history, like a browser) ----------
+const VIEW_NAMES = { today: 'Today', grammar: 'Grammar', vocab: 'Vocabulary', podcasts: 'Podcasts', plan: 'My plan', settings: 'Reminders & settings' };
+let navHist = [];
+let navAt = -1;
+let navMoving = false;
+
+function pageLabel(e) {
+  if (!e) return '';
+  return e.view === 'today' ? `${e.date === todayIso() ? 'Today' : short(e.date)}` : VIEW_NAMES[e.view];
+}
+function updateNav() {
+  $('navBack').disabled = navAt <= 0;
+  $('navNext').disabled = navAt >= navHist.length - 1;
+  $('navBack').title = navAt > 0 ? `Back to ${pageLabel(navHist[navAt - 1])} (Alt + ←)` : 'Previous page (Alt + ←)';
+  $('navNext').title = navAt < navHist.length - 1 ? `Forward to ${pageLabel(navHist[navAt + 1])} (Alt + →)` : 'Next page (Alt + →)';
+  $('navWhere').textContent = navHist.length > 1 ? `Page ${navAt + 1} of ${navHist.length}` : '';
+}
+function recordPage(view) {
+  const e = { view, date: viewDate };
+  const cur = navHist[navAt];
+  if (cur && cur.view === e.view && (view !== 'today' || cur.date === e.date)) return;
+  navHist = navHist.slice(0, navAt + 1);
+  navHist.push(e);
+  if (navHist.length > 50) navHist.shift();
+  navAt = navHist.length - 1;
+  updateNav();
+}
+function goPage(dir) {
+  const i = navAt + dir;
+  if (!navHist[i] || !$('detailOverlay').hidden) return;
+  navAt = i;
+  navMoving = true;
+  if (navHist[i].view === 'today') viewDate = navHist[i].date;
+  showView(navHist[i].view);
+  navMoving = false;
+  $('navBack').closest('main').scrollTop = 0;
+  updateNav();
+}
+// Changing the day with the arrows on Today counts as a new page too.
+function recordDay() { if (!navMoving && navHist[navAt] && navHist[navAt].view === 'today') recordPage('today'); }
+$('navBack').onclick = () => goPage(-1);
+$('navNext').onclick = () => goPage(1);
+document.addEventListener('keydown', (e) => {
+  if (!e.altKey) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goPage(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); goPage(1); }
+});
+// Mouse side buttons (back = 3, forward = 4).
+document.addEventListener('mouseup', (e) => {
+  if (e.button === 3) { e.preventDefault(); goPage(-1); }
+  if (e.button === 4) { e.preventDefault(); goPage(1); }
+});
 document.querySelectorAll('nav button').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
 
 // ---------- TODAY ----------
@@ -243,9 +297,9 @@ $('customTaskForm').addEventListener('submit', (e) => {
   save(); renderToday();
 });
 
-$('prevDay').onclick = () => { viewDate = addDays(viewDate, -1); renderToday(); };
-$('nextDay').onclick = () => { viewDate = addDays(viewDate, 1); renderToday(); };
-$('goToday').onclick = () => { viewDate = todayIso(); renderToday(); };
+$('prevDay').onclick = () => { viewDate = addDays(viewDate, -1); renderToday(); recordDay(); };
+$('nextDay').onclick = () => { viewDate = addDays(viewDate, 1); renderToday(); recordDay(); };
+$('goToday').onclick = () => { viewDate = todayIso(); renderToday(); recordDay(); };
 
 // ---------- TASK DETAILS WINDOW ----------
 let detailId = null;
@@ -854,6 +908,7 @@ setInterval(() => {
 }, 60000);
 
 render();
+recordPage('today'); // first page of the history
 
 // Clear the red "not answered" mark as soon as a question gets an answer.
 $('dBody').addEventListener('change', (e) => {

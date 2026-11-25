@@ -1,7 +1,7 @@
 {
   "name": "english-journey-tracker",
   "productName": "English Journey",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A simple desktop tracker for learning English: grammar, vocabulary, podcasts, daily tasks and reminders.",
   "main": "main.js",
   "author": "nour530",
